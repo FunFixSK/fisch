@@ -1,230 +1,90 @@
-# Fisch Radar Gameplay
+# Fisch Radar
+
+Mobile-first catch identifier for outdoor pretend play.
+
+Live app:
+
+```text
 https://funfixsk.github.io/fisch/
-
-## Purpose
-
-Fisch Radar is not meant to be a full phone game.
-
-It is a quick outdoor play prop that helps children decide what they caught while they continue playing outside with their own story, rods, nets, ships, and crew roles.
-
-The phone should answer one question:
-
-```text
-What did we catch?
 ```
 
-Then it should get out of the way.
+## What It Does
 
-## Core Loop
+Fisch Radar is a quick play prop. Children play outside, decide they caught something, tap `Identify Catch`, and the app reveals a fish name, rarity, weight, and price.
 
-1. Children play outside and pretend to fish.
-2. When the crew decides they caught something, they open the radar.
-3. They choose a radar mode if it fits the story.
-4. They tap `Identify Catch`.
-5. The radar scans briefly.
-6. The app reveals:
-   - fish name
-   - rarity
-   - weight
-   - price
-7. The crew acts out the catch outside.
-8. Tapping the catch card returns to the main radar screen.
+The design goal is to support imagination without turning the phone into the main game.
 
-## Design Principle
+Gameplay details are documented in [GAMEPLAY.md](./GAMEPLAY.md).
 
-Keep phone interaction short.
+## Local Development
 
-The app should support imagination, not replace it.
+Install dependencies:
 
-Avoid mechanics that encourage repeated tapping, grinding, collecting, leveling, or staring at the screen.
-
-## Radar Modes
-
-### Normal
-
-Use for regular fishing.
-
-This is the default mode with mostly common catches and rare special catches.
-
-Story use:
-
-```text
-The crew is sailing normally.
-The water is calm.
-The next catch could be anything.
+```powershell
+npm install
 ```
 
-### Lucky Spot
+Start the local dev server:
 
-Use when the crew finds a magical place in the garden.
-
-This mode gives better odds for rare catches, but still keeps common catches possible.
-
-Story use:
-
-```text
-The crew found glowing water.
-The ship reached a hidden fishing spot.
-The captain says luck is stronger here.
+```powershell
+npm run dev
 ```
 
-### Storm Hunt
+Open the Vite URL in a browser. To test on a phone, use the LAN URL printed by Vite while both devices are on the same network.
 
-Use when the captain starts a boss hunt.
+## Build
 
-This mode has the strongest rare-catch boost and a more intense radar style.
+Build the app locally:
 
-Story use:
-
-```text
-A storm is coming.
-The ship is hunting a giant fish.
-The crew prepares the big net.
+```powershell
+npm run build
 ```
 
-## Catch Rarity
-
-Rarity affects how likely a fish is to appear.
-
-Current rarity bands:
+The local production build is generated into:
 
 ```text
-Trash
-Common
-Uncommon
-Unusual
-Rare
-Legendary
-Mythical
-Exotic
-Secret
+dist/
 ```
 
-High-rarity catches should feel exciting, so they get stronger visual effects and particles.
+## GitHub Pages
 
-## Fish Result
+This project is set up so both source code and the static site can be committed to GitHub.
 
-Each catch has:
+Build the GitHub Pages output:
+
+```powershell
+npm run build:pages
+```
+
+This creates the static site in:
 
 ```text
-Name
-Rarity
-Weight
-Price
+docs/
 ```
 
-Weight is generated dynamically from the fish range.
+Commit both the source files and `docs/`.
 
-Price is calculated from:
+In GitHub repository settings:
 
 ```text
-weight * pricePerKg
+Settings -> Pages -> Build and deployment
+Source: Deploy from a branch
+Branch: main
+Folder: /docs
 ```
 
-## Visual Rules
-
-The main screen should feel like a radar tool.
-
-Normal:
+After deploy, the app should be available at:
 
 ```text
-calm green radar
-steady scan
-regular fishing mood
+https://funfixsk.github.io/fisch/
 ```
 
-Lucky Spot:
+## Project Structure
 
 ```text
-green and gold glow
-small magical sparkles
-hidden-place mood
+src/          application source
+docs/         GitHub Pages static build
+dist/         local build output
+GAMEPLAY.md   gameplay and design notes
+README.md     project setup and deployment
 ```
-
-Storm Hunt:
-
-```text
-orange and red pulse
-faster sweep
-boss-hunt mood
-```
-
-Result screen:
-
-```text
-fish silhouette
-rarity color
-rarity chance
-weight and price report
-tap card to return
-```
-
-## Anti-Phone Rules
-
-Do not add:
-
-- inventory screens
-- upgrades
-- levels
-- daily rewards
-- streaks
-- loot boxes
-- long encyclopedia browsing
-- repeated reroll mechanics
-- "shake harder for better fish"
-
-Possible future additions should push children back into outdoor play.
-
-Good future additions:
-
-- short adventure prompts
-- captain challenges
-- one-catch boost after a physical task
-- session-only catch log
-- parent/captain mode
-
-## Future Ideas
-
-### Adventure Prompt
-
-After a catch, show a small physical-play instruction:
-
-```text
-Carry this fish safely to the ship.
-Everyone hold the net.
-The fish is heavy, count down from 10.
-```
-
-### Captain Boost
-
-A one-use boost for the next catch.
-
-It should be triggered by story, not grinding.
-
-Example:
-
-```text
-Captain Boost ready after the crew repairs the ship.
-Next catch has better odds.
-Boost turns off after one catch.
-```
-
-### Catch Log
-
-A simple session log can remember catches during one play session.
-
-It should not become a collection-completion system.
-
-## Current MVP
-
-The current MVP includes:
-
-- mobile-first radar screen
-- `Identify Catch` button
-- radar scan animation
-- random weighted fish result
-- dynamic weight and price
-- rarity-based visual themes
-- particles for high rarity
-- radar modes: `Normal`, `Lucky Spot`, `Storm Hunt`
-- tap result card to return to main screen
