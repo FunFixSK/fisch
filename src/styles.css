@@ -101,9 +101,17 @@ h1 {
 }
 
 .catalog-note {
+  display: inline;
   margin: 5px 0 0;
+  padding: 0;
+  border: 0;
   color: var(--muted);
+  background: transparent;
+  cursor: pointer;
   font-size: 0.86rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(147, 201, 193, 0.45);
+  text-underline-offset: 3px;
 }
 
 .radar-panel {
@@ -453,6 +461,17 @@ h1 {
   cursor: wait;
 }
 
+.mode-selector.compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  padding: 5px;
+}
+
+.mode-selector.compact button {
+  min-height: 34px;
+  font-size: 0.68rem;
+}
+
 .mode-hint {
   min-height: 0;
   margin: -4px 0 0;
@@ -715,6 +734,94 @@ h1 {
     0 0 28px rgba(var(--signal-rgb), 0.16);
 }
 
+.catalog-screen {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr);
+  gap: 12px;
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid rgba(233, 255, 247, 0.18);
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(var(--signal-rgb), 0.14), rgba(233, 255, 247, 0.03)),
+    rgba(3, 26, 29, 0.78);
+}
+
+.catalog-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.catalog-topline .signal {
+  margin: 0;
+}
+
+.catalog-topline button {
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid rgba(233, 255, 247, 0.18);
+  border-radius: 999px;
+  color: var(--foam);
+  background: rgba(233, 255, 247, 0.08);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.catalog-screen h2 {
+  margin-bottom: 0;
+  color: var(--signal);
+  font-size: clamp(1.7rem, 8vw, 2.55rem);
+  line-height: 0.95;
+}
+
+.rarity-list {
+  min-height: 0;
+  display: grid;
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 4px;
+  overscroll-behavior: contain;
+}
+
+.rarity-row {
+  padding: 10px;
+  border: 1px solid rgba(233, 255, 247, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.rarity-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rarity-row-head strong {
+  color: var(--foam);
+  font-size: 1rem;
+}
+
+.rarity-row-head span {
+  color: var(--signal);
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.rarity-row p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.28;
+}
+
 .rarity-secret {
   border-color: rgba(255, 48, 79, 0.68);
   box-shadow:
@@ -785,9 +892,12 @@ h1 {
     width: min(100%, calc(var(--app-height) * 0.34), 300px);
   }
 
-  .eyebrow,
-  .catalog-note {
+  .eyebrow {
     display: none;
+  }
+
+  .catalog-note {
+    font-size: 0.72rem;
   }
 
   .status-text {

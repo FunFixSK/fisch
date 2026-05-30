@@ -1,12 +1,13 @@
 import { StrictMode, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { CatchResult, fishCatalog, identifyCatch, RadarMode, radarModes, rarityChance, rarityCount } from "./fish";
+import { CatchResult, fishCatalog, identifyCatch, RadarMode, radarModes, Rarity, rarityChance, rarityCount } from "./fish";
 import "./styles.css";
 
 const scanDurationMs = 2200;
+const rarityOrder: Rarity[] = ["Trash", "Common", "Uncommon", "Unusual", "Rare", "Legendary", "Mythical", "Exotic", "Secret"];
 
 function App() {
-  const [mode, setMode] = useState<"idle" | "scanning" | "result">("idle");
+  const [mode, setMode] = useState<"idle" | "scanning" | "result" | "catalog">("idle");
   const [radarMode, setRadarMode] = useState<RadarMode>("normal");
   const [catchResult, setCatchResult] = useState<CatchResult | null>(null);
 
@@ -63,14 +64,18 @@ function App() {
         <header className="app-header">
           <p className="eyebrow">Outdoor catch assistant</p>
           <h1>Fisch Radar</h1>
-          <p className="catalog-note">
+          <button className="catalog-note" type="button" onClick={() => setMode("catalog")}>
             {fishCatalog.length} fish signals across {rarityCount} rarity bands
-          </p>
+          </button>
         </header>
 
-        <RadarVisual mode={mode} result={catchResult} />
+        {mode === "catalog" ? (
+          <CatalogScreen radarMode={radarMode} onModeChange={setRadarMode} onReturn={returnToRadar} />
+        ) : (
+          <RadarVisual mode={mode} result={catchResult} />
+        )}
 
-        {mode === "result" && catchResult ? (
+        {mode === "catalog" ? null : mode === "result" && catchResult ? (
           <CatchCard result={catchResult} radarMode={radarMode} onReturn={returnToRadar} />
         ) : (
           <IdleControls
@@ -104,6 +109,50 @@ function RadarVisual({ mode, result }: { mode: "idle" | "scanning" | "result"; r
       </div>
       <div className="radar-noise" />
     </div>
+  );
+}
+
+function CatalogScreen({
+  radarMode,
+  onModeChange,
+  onReturn,
+}: {
+  radarMode: RadarMode;
+  onModeChange: (mode: RadarMode) => void;
+  onReturn: () => void;
+}) {
+  return (
+    <article className="catalog-screen">
+      <div className="catalog-topline">
+        <p className="signal">Signal archive</p>
+        <button type="button" onClick={onReturn}>
+          Back
+        </button>
+      </div>
+      <h2>{radarModes[radarMode].label}</h2>
+      <div className="mode-selector compact" aria-label="Catalog radar mode">
+        {(Object.keys(radarModes) as RadarMode[]).map((modeKey) => (
+          <button key={modeKey} type="button" className={modeKey === radarMode ? "active" : ""} onClick={() => onModeChange(modeKey)}>
+            {radarModes[modeKey].label}
+          </button>
+        ))}
+      </div>
+      <div className="rarity-list">
+        {rarityOrder.map((rarity) => {
+          const fishNames = fishCatalog.filter((fish) => fish.rarity === rarity).map((fish) => fish.name);
+
+          return (
+            <section key={rarity} className={`rarity-row rarity-row-${rarity.toLowerCase()}`}>
+              <div className="rarity-row-head">
+                <strong>{rarity}</strong>
+                <span>{rarityChance(radarMode, rarity)} catch chance</span>
+              </div>
+              <p>{fishNames.join(", ")}</p>
+            </section>
+          );
+        })}
+      </div>
+    </article>
   );
 }
 
